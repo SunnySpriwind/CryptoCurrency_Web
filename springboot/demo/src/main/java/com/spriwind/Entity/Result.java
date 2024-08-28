@@ -5,8 +5,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * @author Sunny Spriwind
- * @since
+ * @author Qimeng Chen
+ * @since 2024/07/01
+ * This class is an entity class of Result message.
  */
 @Data
 @NoArgsConstructor
@@ -24,7 +25,7 @@ public class Result {
         return new Result(1, "success", data);
     }
 
-    public static Result error(String message){
+    public static Result error(String message) {
         return new Result(0, message, null);
     }
 }

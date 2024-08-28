@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.spriwind.Mapper.CoinMapper">
+    <select id="findCoinWithMarket" resultType="com.spriwind.Entity.Coin">
+        <choose>
+            <when test="market == 'CoinGecko'">
+                SELECT name, price, pricetime,market,vol,marketcap
+                FROM CoinGecko
+                WHERE name = #{name}
+                  AND pricetime >= NOW() - INTERVAL 24 HOUR
+            </when>
+            <when test="market == 'Binance'">
+                SELECT name, price, pricetime,market,vol,marketcap
+                FROM Binance
+                WHERE name = #{name}
+                  AND pricetime >= NOW() - INTERVAL 24 HOUR
+            </when>
+            <when test="market == 'CoinMarketCap'">
+                SELECT name, price, pricetime,market,vol,marketcap
+                FROM CoinMarketCap
+                WHERE name = #{name}
+                AND pricetime >= NOW() - INTERVAL 24 HOUR
+            </when>
+            <otherwise>
+                SELECT 1
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="findCoinWithTime" resultType="com.spriwind.Entity.Coin">
+        <choose>
+            <when test="market == 'CoinGecko'">
+                SELECT name, price, pricetime, market
+                FROM CoinGecko
+                WHERE name = #{name}
+                AND pricetime BETWEEN #{start} AND #{end}
+            </when>
+            <when test="market == 'Binance'">
+                SELECT name, price, pricetime, market
+                FROM Binance
+                WHERE name = #{name}
+                AND pricetime BETWEEN #{start} AND #{end}
+            </when>
+            <when test="market == 'CoinMarketCap'">
+                SELECT name, price, pricetime, market
+                FROM CoinMarketCap
+                WHERE name = #{name}
+                AND pricetime BETWEEN #{start} AND #{end}
+            </when>
+            <otherwise>
+                SELECT 1
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="findMaxPrice" resultType="com.spriwind.Entity.Coin">
+        <choose>
+            <when test="market == 'CoinGecko'">
+                SELECT name, pricetime, price, market,vol
+                FROM CoinGecko
+                WHERE name = #{name}
+                AND pricetime >= NOW() - INTERVAL 1 DAY
+                AND price = (SELECT MAX(price) FROM CoinGecko WHERE name = #{name} AND pricetime >= NOW() - INTERVAL 1 DAY
+                );
+            </when>
+            <when test="market == 'Binance'">
+                SELECT name, pricetime, price, market, vol
+                FROM Binance
+                WHERE name = #{name}
+                AND pricetime >= NOW() - INTERVAL 1 DAY
+                AND price = (SELECT MAX(price) FROM Binance WHERE name = #{name} AND pricetime >= NOW() - INTERVAL 1 DAY
+                );
+            </when>
+            <when test="market == 'CoinMarketCap'">
+                SELECT name, pricetime, price, market,vol
+                FROM CoinMarketCap
+                WHERE name = #{name}
+                AND pricetime >= NOW() - INTERVAL 1 DAY
+                AND price = (SELECT MAX(price) FROM CoinMarketCap WHERE name = #{name} AND pricetime >= NOW() - INTERVAL 1 DAY
+                );
+            </when>
+            <otherwise>
+                SELECT 1
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="findMinPrice" resultType="com.spriwind.Entity.Coin">
+        <choose>
+            <when test="market == 'CoinGecko'">
+                SELECT name, pricetime, price, market, vol
+                FROM CoinGecko
+                WHERE name = #{name}
+                AND pricetime >= NOW() - INTERVAL 24 HOUR
+                AND price = (SELECT Min(price) FROM CoinGecko WHERE name = #{name} AND pricetime >= NOW() - INTERVAL 24 HOUR
+                );
+            </when>
+            <when test="market == 'Binance'">
+                SELECT name, pricetime, price, market, vol
+                FROM Binance
+                WHERE name = #{name}
+                AND pricetime >= NOW() - INTERVAL 24 HOUR
+                AND price = (SELECT MIN(price) FROM Binance WHERE name = #{name} AND pricetime >= NOW() - INTERVAL 24 HOUR
+                );
+            </when>
+            <when test="market == 'CoinMarketCap'">
+                SELECT name, pricetime, price, market, vol
+                FROM CoinMarketCap
+                WHERE name = #{name}
+                AND pricetime >= NOW() - INTERVAL 24 HOUR
+                AND price = (SELECT MIN(price) FROM CoinMarketCap WHERE name = #{name} AND pricetime >= NOW() - INTERVAL 24 HOUR
+                );
+            </when>
+            <otherwise>
+                SELECT 1
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="findMaxVol" resultType="com.spriwind.Entity.Coin">
+        <choose>
+            <when test="market == 'CoinGecko'">
+                SELECT name, pricetime, price, market,vol
+                FROM CoinGecko
+                WHERE name = #{name}
+                AND pricetime >= NOW() - INTERVAL 24 HOUR
+                AND price = (SELECT Min(vol) FROM CoinGecko WHERE name = #{name} AND pricetime >= NOW() - INTERVAL 24 HOUR
+                );
+            </when>
+            <when test="market == 'Binance'">
+                SELECT name, pricetime, price, market
+                FROM Binance
+                WHERE name = #{name}
+                AND pricetime >= NOW() - INTERVAL 24 HOUR
+                AND price = (SELECT MIN(vol) FROM Binance WHERE name = #{name} AND pricetime >= NOW() - INTERVAL 24 HOUR
+                );
+            </when>
+            <when test="market == 'CoinMarketCap'">
+                SELECT name, pricetime, price, market
+                FROM CoinMarketCap
+                WHERE name = #{name}
+                AND pricetime >= NOW() - INTERVAL 24 HOUR
+                AND price = (SELECT MIN(vol) FROM CoinMarketCap WHERE name = #{name} AND pricetime >= NOW() - INTERVAL 24 HOUR
+                );
+            </when>
+            <otherwise>
+                SELECT 1
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="findMinVol" resultType="com.spriwind.Entity.Coin">
+        <choose>
+            <when test="market == 'CoinGecko'">
+                SELECT name, pricetime, price, market, vol
+                FROM CoinGecko
+                WHERE name = #{name}
+                AND pricetime >= NOW() - INTERVAL 24 HOUR
+                AND price = (SELECT Min(vol) FROM CoinGecko WHERE name = #{name} AND pricetime >= NOW() - INTERVAL 24 HOUR
+                );
+            </when>
+            <when test="market == 'Binance'">
+                SELECT name, pricetime, price, market, vol
+                FROM Binance
+                WHERE name = #{name}
+                AND pricetime >= NOW() - INTERVAL 24 HOUR
+                AND price = (SELECT MIN(vol) FROM Binance WHERE name = #{name} AND pricetime >= NOW() - INTERVAL 24 HOUR
+                );
+            </when>
+            <when test="market == 'CoinMarketCap'">
+                SELECT name, pricetime, price, market, vol
+                FROM CoinMarketCap
+                WHERE name = #{name}
+                AND pricetime >= NOW() - INTERVAL 24 HOUR
+                AND price = (SELECT MIN(vol) FROM CoinMarketCap WHERE name = #{name} AND pricetime >= NOW() - INTERVAL 24 HOUR
+                );
+            </when>
+            <otherwise>
+                SELECT 1
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id = "getData" resultType="com.spriwind.Entity.Coin">
+        <choose>
+            <when test="market == 'CoinGecko'">
+                SELECT name, pricetime, price, market, vol
+                FROM CoinGecko
+                WHERE name = #{name} AND pricetime = NOW()
+            </when>
+            <when test="market == 'Binance'">
+                SELECT name, pricetime, price, market,vol
+                FROM Binance
+                WHERE name = #{name} AND pricetime = NOW()
+            </when>
+            <when test="market == 'CoinMarketCap'">
+                SELECT name, pricetime, price, market,vol
+                FROM CoinMarketCap
+                WHERE name = #{name} AND pricetime = NOW()
+            </when>
+            <otherwise>
+                SELECT 1
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="kLineChart" resultType="com.spriwind.Entity.CoinForKline">
+        <choose>
+            <when test="name == 'bitcoin'">
+                SELECT *
+                FROM CoinGecko_Kline
+                WHERE name = 'bitcoin'AND granularity = #{period}
+            </when>
+            <when test="name == 'ethereum'">
+                SELECT *
+                FROM CoinGecko_Kline
+                WHERE name = 'ethereum' AND granularity = #{period}
+            </when>
+            <when test="name == 'binancecoin'">
+                SELECT *
+                FROM CoinGecko_Kline
+                WHERE name = 'binancecoin' AND granularity = #{period}
+            </when>
+            <otherwise>
+                SELECT 1
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="update" resultType="com.spriwind.Entity.Coin">
+        <choose>
+            <when test="market == 'CoinGecko'">
+                SELECT *
+                FROM CoinGecko
+                WHERE name = #{name}
+                ORDER BY pricetime DESC
+                LIMIT 1;
+            </when>
+            <when test="market == 'CoinMarketCap'">
+                SELECT *
+                FROM CoinMarketCap
+                WHERE name = #{name}
+                ORDER BY pricetime DESC
+                LIMIT 1;
+            </when>
+            <otherwise>
+                SELECT 1
+            </otherwise>
+        </choose>
+    </select>
+</mapper>

@@ -9,23 +9,25 @@ import java.time.LocalDateTime;
 /**
  * @author Qimeng Chen
  * @since 2024/07/01
- * This class is an entity class of user data.
+ * This class is an entity class of Coin data.
  */
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class Coin {
 
-    private Integer id;
+    private int id;
 
     private String name;
 
-    private String password;
+    private String price;
 
-    private String email;
+    private String market;
 
-    private String image;
+    private LocalDateTime pricetime;
 
-    private LocalDateTime create_time;
+    private String vol;
 
+    private String marketcap;
 }

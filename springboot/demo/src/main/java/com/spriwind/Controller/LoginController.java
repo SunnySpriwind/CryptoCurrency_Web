@@ -16,8 +16,9 @@ import java.util.HashMap;
 
 
 /**
- * @author Sunny Spriwind
- * @since
+ * @author Qimeng Chen
+ * @since 2024/07/01
+ * This class is to create API about Login to accept requests sent by web.
  */
 
 @CrossOrigin(origins = "http://localhost:8081")
@@ -28,12 +29,13 @@ public class LoginController {
     @Autowired
     private UserService userservice;
 
+    // The API of login.
     @PostMapping("/login")
     public Result login(@RequestBody User user) {
         log.info("user login:", user);
         User u = userservice.login(user);
 
-        if(u != null) {
+        if (u != null) {
             HashMap<String, Object> claims = new HashMap<>();
             claims.put("id", u.getId());
             claims.put("name", u.getName());
@@ -43,9 +45,10 @@ public class LoginController {
             return Result.success(jwt);
         }
 
-        return u!=null?Result.success():Result.error("username or password error");
+        return u != null ? Result.success() : Result.error("username or password error");
     }
 
+    // The API of register.
     @PostMapping("/register")
     public Result register(@RequestBody User user) {
         log.info("user register:", user);

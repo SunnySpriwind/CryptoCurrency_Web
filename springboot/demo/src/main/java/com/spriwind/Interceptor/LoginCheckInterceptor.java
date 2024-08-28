@@ -12,8 +12,9 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
- * @author Sunny Spriwind
- * @since
+ * @author Qimeng Chen
+ * @since 2024/07/01
+ * This class is to generate and parse JWT.
  */
 
 @Slf4j
@@ -35,6 +36,7 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
 
         // To get JWT
         String jwt = request.getHeader("token");
+        log.info("jwt:" + jwt);
 
         // If JWT is valid
         if (!StringUtils.hasLength(jwt)) {
@@ -46,9 +48,9 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
         }
 
         //To parse JWT
-        try{
+        try {
             JWT.parseJWT(jwt);
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             log.info("parse jwt error");
             Result error = Result.error("Not Login");
